@@ -11,8 +11,10 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisTable;
+import com.lzy.awar.unit.Infantry;
 import com.lzy.awar.utiltest.CamController;
 
 public class GameCore extends ApplicationAdapter {
@@ -22,6 +24,8 @@ public class GameCore extends ApplicationAdapter {
     private BitmapFont font;
     private SpriteBatch batch;
     private CamController camController;
+
+    Infantry infantry;
 
     VisUI visUI;
     VisTable visTable;
@@ -57,6 +61,9 @@ public class GameCore extends ApplicationAdapter {
         visUI = new VisUI();
         visUI.load();
         visTable = new VisTable(true);
+
+        /// Initialize Infantry unit
+        infantry = new Infantry(new Vector2(64, 64));
     }
 
     @Override
@@ -73,6 +80,12 @@ public class GameCore extends ApplicationAdapter {
         batch.begin();
         camController.debuggerMessagesRenderer(batch, font);
         font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 60);
+        /**
+         * Currently it not render in tile level right now.
+         * (It's render on @SpriteBatch like camController debugger and FPS data render)
+         * so TODO: Make infantry unit display at tile level
+         */
+        infantry.draw(batch);
         batch.end();
     }
 
@@ -95,5 +108,6 @@ public class GameCore extends ApplicationAdapter {
     public void dispose() {
         map.dispose();
         visUI.dispose();
+        infantry.dispose();
     }
 }
